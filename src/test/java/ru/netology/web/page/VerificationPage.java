@@ -18,18 +18,14 @@ public class VerificationPage {
         codeField.shouldBe(visible);
     }
 
-    public void verificationPageIsHidden() {
-        codeField.shouldBe(disappear);
-    }
-
     public DashboardPage validVerify(String verificationCode) {
         codeField.setValue(verificationCode);
         verifyButton.click();
         return new DashboardPage();
     }
 
-    public void invalidVerify(DataHelper.VerificationCode verificationCode) {
-        codeField.setValue(verificationCode.getCode());
+    public void invalidVerify(String code) {
+        codeField.setValue(code);
         verifyButton.click();
         errorNotification.shouldBe(visible);
     }
