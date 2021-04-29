@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
 import ru.netology.web.data.DataHelper;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -24,32 +25,28 @@ public class LoginPage {
         passwordField.doubleClick().sendKeys(Keys.DELETE);
     }
 
-    public VerificationPage validLogin() {
+    public void logIn(String login, String password) {
         fieldСleaning();
-        loginField.setValue(DataHelper.getAuthInfo().getLogin());
-        passwordField.setValue(DataHelper.getAuthInfo().getPassword());
+        loginField.setValue(login);
+        passwordField.setValue(password);
         loginButton.click();
+    }
+
+    public VerificationPage validLogIn(String login, String password) {
+        logIn(login, password);
         return new VerificationPage();
     }
 
-    public void invalidLogin() {
-        fieldСleaning();
-        loginField.setValue(DataHelper.getInvalidAuthInfo().getLogin());
-        passwordField.setValue(DataHelper.getInvalidAuthInfo().getPassword());
-        loginButton.click();
+    public void invalidLogIn(String login, String password) {
+        logIn(login, password);
         errorNotification.shouldBe(visible);
     }
 
-    public void invalidPassword() {
-        fieldСleaning();
-        loginField.setValue(DataHelper.getAuthInfo().getLogin());
-        passwordField.setValue(DataHelper.getInvalidAuthInfo().getPassword());
-        loginButton.click();
-        loginButton.click();
-        loginButton.click();
+    public void blockingMessage() {
+        errorNotification.shouldBe(visible).shouldHave(exactText("Система заблокирована"));
     }
 
-    public void emptyLogin() {
+    public void emptyLogIn() {
         loginButton.click();
         emptyLogin.shouldBe(visible);
         emptyPassword.shouldBe(visible);
