@@ -1,15 +1,15 @@
-package ru.netology;
+package ru.netology.web.data;
 
+import lombok.SneakyThrows;
 import lombok.val;
+import com.github.javafaker.Faker;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DbInteraction {
 
-    public static Statement getStatement() throws SQLException {
+    @SneakyThrows
+    public static Statement getStatement() {
         val conn = DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/app", "app", "pass"
         );
@@ -17,11 +17,12 @@ public class DbInteraction {
         return statement;
     }
 
-    public static String verificationCode() throws SQLException {
-        try (
-                val statement = getStatement();
-        ) {
-            try (val rs = statement.executeQuery("SELECT * FROM auth_codes;")) {
+    @SneakyThrows
+    public static String verificationCode() {
+        val statement = getStatement();
+        {
+            val rs = statement.executeQuery("SELECT * FROM auth_codes;");
+            {
                 if (rs.next()) {
                     val code = rs.getString("code");
                     return code;
@@ -31,17 +32,26 @@ public class DbInteraction {
         return null;
     }
 
-    public static void clearDatabase() throws SQLException {
-        try (
-                val statement = getStatement();
-        )
-        {
-            try {
-                statement.executeUpdate("DELETE FROM  auth_codes;");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
+    @SneakyThrows
+    public static void clearDatabase() {
+        val statement = getStatement();
+        String sql = "DELETE FROM  auth_codes;";
+        statement.executeUpdate(sql);
+    }
+
+    static Faker faker = new Faker();
+
+    public static String getInvalidLogin() {
+        return faker.name().username();
+    }
+
+    public static String getInvalidPassword() {
+        return faker.internet().password();
+    }
+
+    public static String getInvalidCode() {
+        return faker.number().digits(4);
     }
 }
+
 
