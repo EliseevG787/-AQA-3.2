@@ -33,10 +33,12 @@ public class DbInteraction {
     }
 
     @SneakyThrows
-    public static void clearDatabase() {
+    public static void cleanDatabase() {
         val statement = getStatement();
-        String sql = "DELETE FROM  auth_codes;";
-        statement.executeUpdate(sql);
+        statement.executeUpdate("DELETE FROM  auth_codes;");
+        statement.executeUpdate("DELETE FROM  cards;");
+        statement.executeUpdate("DELETE FROM  users;");
+        statement.executeUpdate("DELETE FROM  card_transactions;");
     }
 
     static Faker faker = new Faker();
