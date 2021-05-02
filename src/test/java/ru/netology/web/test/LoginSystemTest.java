@@ -1,6 +1,7 @@
 package ru.netology.web.test;
 
 import lombok.val;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.web.data.DbInteraction;
@@ -12,8 +13,12 @@ import static com.codeborne.selenide.Selenide.open;
 class LoginSystemTest {
     @BeforeEach
     void setUp() {
-        DbInteraction.clearDatabase();
         open("http://localhost:9999");
+    }
+
+    @AfterAll
+    static  void clean() {
+       DbInteraction.cleanDatabase();
     }
 
     String login = DataHelper.getAuthInfo().getLogin();
