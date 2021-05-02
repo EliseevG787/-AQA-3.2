@@ -17,8 +17,8 @@ class LoginSystemTest {
     }
 
     @AfterAll
-    static  void clean() {
-       DbInteraction.cleanDatabase();
+    static void clean() {
+        DbInteraction.cleanDatabase();
     }
 
     String login = DataHelper.getAuthInfo().getLogin();
