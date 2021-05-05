@@ -21,7 +21,7 @@ public class DbInteraction {
     public static String verificationCode() {
         val statement = getStatement();
         {
-            val rs = statement.executeQuery("SELECT * FROM auth_codes;");
+            val rs = statement.executeQuery("SELECT * FROM auth_codes ORDER BY created DESC LIMIT 1;");
             {
                 if (rs.next()) {
                     val code = rs.getString("code");
